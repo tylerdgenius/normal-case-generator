@@ -14,7 +14,8 @@ type CheckFilter<T extends filterType> = T extends 'single' ? string : undefined
 
 type normalCaseOptions = {
     filter: filterType,
-    textToFind: CheckFilter<filterType>
+    textToCapitalize?: CheckFilter<filterType>;
+    // seperator?: "_" | "," | " "
 }
 
 type normalCaseGeneratorType = (value: string, options?: normalCaseOptions) => string
@@ -24,7 +25,7 @@ export const normalCaseGenerator: normalCaseGeneratorType = (value, options) => 
      * Check to confirm if options are passed in
      */
     if (options) {
-        const { filter, textToFind } = options;
+        const { filter, textToCapitalize: textToFind } = options;
         /**
          * If filter does not exist
          */
@@ -43,7 +44,7 @@ export const normalCaseGenerator: normalCaseGeneratorType = (value, options) => 
             /**
              * Capitalize all first letters of string passed in
              */
-            let splitValue = value.split(" ");
+            let splitValue = value.split(' ');
             /**
              * Map through every value
              */
@@ -66,14 +67,18 @@ export const normalCaseGenerator: normalCaseGeneratorType = (value, options) => 
         /**
          * If filter is set to single, then textToCapitalize should be capitalized
          */
-        if (filter === 'single' && textToFind) {
-            let capitalizedString = value.split(" ");
-            let returnedSplitValues = capitalizedString.map((value) => {
-                if (value === textToFind)
-                    return `${value.charAt(0).toUpperCase()}${value.slice(1)}`;
+        if (filter === 'single') {
+            if(textToFind) {
+                let capitalizedString = value.split(' ');
+                let returnedSplitValues = capitalizedString.map((value) => {
+                    if (value.toLowerCase() === textToFind.toLowerCase())
+                        return `${value.charAt(0).toUpperCase()}${value.slice(1)}`;
+                    return value;
+                })
+                return returnedSplitValues.join(" ")
+            } else {
                 return value;
-            })
-            return returnedSplitValues.join(" ")
+            } 
         }
         /**
              * Capitalize just the first letter
