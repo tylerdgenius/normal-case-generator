@@ -1,6 +1,6 @@
 {
   "name": "normal-case-generator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "This file helps generate capitalized starting letters of text",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
